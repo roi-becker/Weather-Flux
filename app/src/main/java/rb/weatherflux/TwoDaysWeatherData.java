@@ -5,19 +5,19 @@ package rb.weatherflux;
  */
 public class TwoDaysWeatherData {
 
-    private OneDayWeatherData m_yesterdayData;
-    private OneDayWeatherData m_todayData;
+    private OneDayWeatherData mYesterdayData;
+    private OneDayWeatherData mTodayData;
 
     public TwoDaysWeatherData(OneDayWeatherData yesterdayData, OneDayWeatherData todayData) {
-        m_yesterdayData = yesterdayData;
-        m_todayData = todayData;
+        mYesterdayData = yesterdayData;
+        mTodayData = todayData;
     }
 
     public OneDayWeatherData getYesterdayData() {
-        return m_yesterdayData;
+        return mYesterdayData;
     }
 
     public OneDayWeatherData getTodayData() {
-        return m_todayData;
+        return mTodayData;
     }
 }

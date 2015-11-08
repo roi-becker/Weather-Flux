@@ -5,25 +5,29 @@ package rb.weatherflux;
  */
 public class Location {
 
-    private String m_latitude;
-    private String m_longitude;
-    private String m_name;
+    private String mLatitude;
+    private String mLongitude;
+    private String mName;
 
     public Location(String latitude, String longitude, String name) {
-        m_latitude = latitude;
-        m_longitude = longitude;
-        m_name = name;
+        mLatitude = latitude;
+        mLongitude = longitude;
+        mName = name;
+    }
+
+    public Location(double latitude, double longitude, String name) {
+        this(latitude+"", longitude+"", name);
     }
 
     public String getLatitude() {
-        return m_latitude;
+        return mLatitude;
     }
 
     public String getLongitude() {
-        return m_longitude;
+        return mLongitude;
     }
 
     public String getName() {
-        return m_name;
+        return mName;
     }
 }

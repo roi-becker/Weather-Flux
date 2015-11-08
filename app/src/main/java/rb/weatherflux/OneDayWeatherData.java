@@ -13,28 +13,28 @@ import java.util.Locale;
  */
 public class OneDayWeatherData {
 
-    private Calendar m_calendar;
-    private FIODataPoint[] m_dataPoints = new FIODataPoint[24];
+    private Calendar mCalendar;
+    private FIODataPoint[] mDataPoints = new FIODataPoint[24];
 
     public OneDayWeatherData(Calendar calendar, ForecastIO fio) {
-        m_calendar = calendar;
+        mCalendar = calendar;
 
         FIOHourly hourly = new FIOHourly(fio);
         for (int i = 0; i < 24; i++) {
             FIODataPoint dataPoint = hourly.getHour(i);
             dataPoint.setTimezone(calendar.getTimeZone().getID());
-            m_dataPoints[i] = dataPoint;
+            mDataPoints[i] = dataPoint;
         }
     }
 
     public FIODataPoint[] getDataPoints() {
-        return m_dataPoints;
+        return mDataPoints;
     }
 
     @Override
     public String toString() {
-        String ret = String.format("%1$-10s", new SimpleDateFormat("EEEE", Locale.US).format(m_calendar.getTime()));
-        for (FIODataPoint dataPoint : m_dataPoints) {
+        String ret = String.format("%1$-10s", new SimpleDateFormat("EEEE", Locale.US).format(mCalendar.getTime()));
+        for (FIODataPoint dataPoint : mDataPoints) {
             ret += " " + Math.round(dataPoint.temperature());
         }
         return ret;

@@ -5,18 +5,25 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.LocationManager;
 import android.os.Build;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.MotionEvent;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements DownloadWeatherTask.Listener {
 
+    private Toolbar mToolbar;
+    private FloatingActionButton mFab;
     private TextView mLocation;
-    private TextView mYesterday;
-    private TextView mToday;
+    private TextView mDataLabel;
 
     private android.location.Location mLatestLocation;
+    private TwoDaysWeatherData mData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,14 +31,31 @@ public class MainActivity extends AppCompatActivity implements DownloadWeatherTa
 
         setContentView(R.layout.activity_main);
         bindViews();
+        setSupportActionBar(mToolbar);
+
+        mFab.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN) {
+                    showData(false);
+                    Log.d("=====", "down");
+                    return true;
+                } else if (event.getAction() == MotionEvent.ACTION_UP) {
+                    showData(true);
+                    Log.d("=====", "up");
+                    return true;
+                }
+                return false;
+            }
+        });
 
         checkLocationPermission();
     }
 
     @Override
-    public void onDownloadCompleted(OneDayWeatherData yesterdayData, OneDayWeatherData todayData) {
-        mYesterday.setText(yesterdayData.toString());
-        mToday.setText(todayData.toString());
+    public void onDownloadCompleted(TwoDaysWeatherData data) {
+        mData = data;
+        showData(true);
     }
 
     @Override
@@ -44,9 +68,10 @@ public class MainActivity extends AppCompatActivity implements DownloadWeatherTa
     }
 
     private void bindViews() {
+        mToolbar = (Toolbar)findViewById(R.id.toolbar);
+        mFab = (FloatingActionButton)findViewById(R.id.fab);
         mLocation = (TextView)findViewById(R.id.location);
-        mYesterday = (TextView)findViewById(R.id.yesterday);
-        mToday = (TextView)findViewById(R.id.today);
+        mDataLabel = (TextView)findViewById(R.id.data);
     }
 
     private void checkLocationPermission() {
@@ -73,5 +98,9 @@ public class MainActivity extends AppCompatActivity implements DownloadWeatherTa
 
     private void downloadWeather() {
         new DownloadWeatherTask(this).execute(new Location(mLatestLocation.getLatitude(), mLatestLocation.getLongitude(), ""));
+    }
+
+    private void showData(boolean today) {
+        mDataLabel.setText(today ? mData.getTodayData().toString() : mData.getYesterdayData().toString());
     }
 }

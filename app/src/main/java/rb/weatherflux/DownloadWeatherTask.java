@@ -15,7 +15,7 @@ public class DownloadWeatherTask extends AsyncTask<Location, Void, TwoDaysWeathe
 
     public interface Listener {
 
-        void onDownloadCompleted(OneDayWeatherData yesterdayData, OneDayWeatherData todayData);
+        void onDownloadCompleted(TwoDaysWeatherData data);
     }
 
     private WeakReference<Listener> mListener; // Don't keep the listener alive just to get your message.
@@ -46,9 +46,7 @@ public class DownloadWeatherTask extends AsyncTask<Location, Void, TwoDaysWeathe
 
         Listener listener = mListener.get();
         if (listener != null) {
-            listener.onDownloadCompleted(
-                    twoDaysWeatherData.getYesterdayData(),
-                    twoDaysWeatherData.getTodayData());
+            listener.onDownloadCompleted(twoDaysWeatherData);
         }
     }
 
